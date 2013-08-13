@@ -23,9 +23,9 @@ class MicroformatterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['microformatter'] = $this->app->share(function($app){
+		$this->app->bind('microformatter', function(){
 			return new Microformatter();
-		});	
+		});
 	}
 
 	/**

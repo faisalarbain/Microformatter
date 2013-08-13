@@ -4,6 +4,7 @@ use HtmlObject\Image;
 use HtmlObject\Link;
 use HtmlObject\Traits\Tag;
 
+if(!class_exists("TestCase")){
 class TestCase extends PHPUnit_Framework_TestCase
 {
 
@@ -78,4 +79,4 @@ class TestCase extends PHPUnit_Framework_TestCase
         .json_encode($matcher));
   }
 
-}
+}}

@@ -19,13 +19,67 @@ class Microformatter extends Tag
 			));
 
 		if($format){
-			if(method_exists($date, $format)){
+			$param = false;
+			if(is_array($format)){
+				$param = array_values($format)[0];
+				$format = array_keys($format)[0];
+			}
+			
+			if(!$param){
 				$this->setValue($date->{$format}());
 			}else{
-				$this->setValue($date->format($format));
+				$this->setValue($date->{$format}($param));
 			}
+			
 		}
 
+		return $this;
+	}
+
+	public function author($name)
+	{
+		return $this->class("author")->setValue($name)->setElement("strong");
+	}
+
+	public function prepTime($duration, $format = "min")
+	{
+		$formats = array(
+			"min" => "M",
+			"jam" => "H",
+			"hour" => "H",
+			"mins" => "M"
+		);
+		if(!array_key_exists($format, $formats)){
+			throw new \Exception("Invalid prep time format.");
+			
+		}
+
+		$format_code = $formats[$format];
+
+		$value_title = Element::span()->setAttribute("title", "PT{$duration}{$format_code}")->addClass("value-title");
+		$this->class("prepTime")->setValue("$duration $format")
+		->nest(array($value_title));
+		return $this;
+	}
+
+	public function cookTime($duration, $format = "min")
+	{
+		$formats = array(
+			"min" => "M",
+			"jam" => "H",
+			"hour" => "H",
+			"mins" => "M"
+		);
+		if(!array_key_exists($format, $formats)){
+			throw new \Exception("Invalid prep time format.");
+			
+		}
+
+		$format_code = $formats[$format];
+
+		$value_title = Element::span()->setAttribute("title", "PT{$duration}{$format_code}")->addClass("value-title");
+		$this->class("cookTime")->setValue("$duration $format")
+		->nest(array($value_title));
 		return $this;
 	}
 }
