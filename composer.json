@@ -1,0 +1,21 @@
+{
+    "name": "faisal-arbain/microformatter",
+    "description": "",
+    "authors": [
+        {
+            "name": "Faisal Arbain",
+            "email": "faisal.arbain@flavert.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x",
+        "anahkiasen/html-object": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "FaisalArbain\\Microformatter": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
