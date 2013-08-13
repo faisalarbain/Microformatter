@@ -1,6 +1,7 @@
 <?php namespace FaisalArbain\Microformatter;
 
 use Illuminate\Support\ServiceProvider;
+use FaisalArbain\Microformatter\Microformatter;
 
 class MicroformatterServiceProvider extends ServiceProvider {
 
@@ -11,6 +12,10 @@ class MicroformatterServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
+	public function boot()
+	{
+		$this->package('faisalarbain/microformatter');
+	}
 	/**
 	 * Register the service provider.
 	 *
@@ -18,7 +23,9 @@ class MicroformatterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		$this->app['microformatter'] = $this->app->share(function($app){
+			return new Microformatter();
+		});	
 	}
 
 	/**
@@ -28,7 +35,7 @@ class MicroformatterServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return array('microformatter');
 	}
 
 }
