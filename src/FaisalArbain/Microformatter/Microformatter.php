@@ -9,29 +9,8 @@ class Microformatter extends Tag
 
 	public function published(Carbon $date, $format = false)
 	{
-		// <span class="value-title" title="{{$recipe->created_at}}"></span>
-		$value_title = Element::span()->setAttribute("title", $date->toISO8601String())->addClass("value-title");
-		
-		$this->class("published")
-		->setValue($date)
-		->nest(array(
-			$value_title
-			));
-
-		if($format){
-			$param = false;
-			if(is_array($format)){
-				$param = array_values($format)[0];
-				$format = array_keys($format)[0];
-			}
-			
-			if(!$param){
-				$this->setValue($date->{$format}());
-			}else{
-				$this->setValue($date->{$format}($param));
-			}
-			
-		}
+		$display_value = $this->getDisplayDate($date, $format);
+		$this->create("published", $display_value, $date->toISO8601String());
 
 		return $this;
 	}
@@ -43,27 +22,48 @@ class Microformatter extends Tag
 
 	public function prepTime($duration, $format = "min")
 	{
-		$formats = array(
-			"min" => "M",
-			"jam" => "H",
-			"hour" => "H",
-			"mins" => "M"
-		);
-		if(!array_key_exists($format, $formats)){
-			throw new \Exception("Invalid prep time format.");
-			
-		}
+		$format_code = $this->getFormatCode($format);
 
-		$format_code = $formats[$format];
-
-		$value_title = Element::span()->setAttribute("title", "PT{$duration}{$format_code}")->addClass("value-title");
-		$this->class("prepTime")->setValue("$duration $format")
-		->nest(array($value_title));
+		$this->create("prepTime","$duration $format", "PT{$duration}{$format_code}");
+		
 		return $this;
 	}
 
 	public function cookTime($duration, $format = "min")
 	{
+		$format_code = $this->getFormatCode($format);
+		$this->create("cookTime","$duration $format", "PT{$duration}{$format_code}");
+		return $this;
+	}
+
+	public function create($type, $display_value, $actual_value = false)
+	{
+		$this->class($type)->setValue($display_value);
+		if($actual_value){
+			$child = Element::span()->setAttribute("title",$actual_value)->addClass("value-title");
+			$this->nest(array($child));
+		}
+
+		return $this;
+	}
+
+	protected function getDisplayDate($date, $format)
+	{
+		if($format){
+			if(is_array($format)){
+				$param = array_values($format)[0];
+				$format = array_keys($format)[0];
+
+				$date = $date->{$format}($param);
+			}else{
+				$date = $date->{$format}();
+			}	
+		}
+
+		return $date;
+	}
+
+	protected function getFormatCode($format){
 		$formats = array(
 			"min" => "M",
 			"jam" => "H",
@@ -71,15 +71,10 @@ class Microformatter extends Tag
 			"mins" => "M"
 		);
 		if(!array_key_exists($format, $formats)){
-			throw new \Exception("Invalid prep time format.");
+			throw new \Exception("Invalid time format.");
 			
 		}
 
-		$format_code = $formats[$format];
-
-		$value_title = Element::span()->setAttribute("title", "PT{$duration}{$format_code}")->addClass("value-title");
-		$this->class("cookTime")->setValue("$duration $format")
-		->nest(array($value_title));
-		return $this;
+		return $formats[$format];
 	}
 }
