@@ -5,7 +5,7 @@ use Carbon\Carbon;
 
 class Microformatter extends Tag
 {
-	protected $element = "span";
+	protected $element = "span"; 
 
 	public function published(Carbon $date, $format = false)
 	{
@@ -56,7 +56,7 @@ class Microformatter extends Tag
 
 				$date = $date->{$format[0]}($param[0]);
 			}else{
-				$date = $date->{$format[0]}();
+				$date = $date->{$format}();
 			}	
 		}
 
