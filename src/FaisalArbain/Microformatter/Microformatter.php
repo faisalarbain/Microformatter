@@ -51,12 +51,12 @@ class Microformatter extends Tag
 	{
 		if($format){
 			if(is_array($format)){
-				$param = array_values($format)[0];
-				$format = array_keys($format)[0];
+				$param = array_values($format);
+				$format = array_keys($format);
 
-				$date = $date->{$format}($param);
+				$date = $date->{$format[0]}($param[0]);
 			}else{
-				$date = $date->{$format}();
+				$date = $date->{$format[0]}();
 			}	
 		}
 
