@@ -19,5 +19,5 @@ class AuthorTest extends TestCase
 		$output = $m->author("Foo");
 		$matcher = $this->getMatcher('strong','Foo', array("class" => 'author'));
 	    $this->assertHtml($matcher, $output);
-	}
+	} 
 }
