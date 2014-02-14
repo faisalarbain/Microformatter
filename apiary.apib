@@ -1,9 +1,25 @@
 FORMAT: 1A
 HOST: http://www.google.com
 
-# Notes API
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+# Uni-Chef API
 
+# Group User
+## Users Collection [/users]
+### List all Users [GET]
++ Response 200 (application/json)
+    
+        {
+            page: 1
+        }
+
+## User [/users/{user_id}]
+### Retrieve an User
++ Response 200 (application/json)
+        {
+            name: "John doe",
+            email : "john@email.com"
+        }
+    
 # Group Notes
 Notes related resources of the **Notes API**
 
